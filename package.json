@@ -1,0 +1,10 @@
+{
+  "name": "legos",
+  "description": "Snap your streams together",
+  "version": "0.1.0",
+  "author": "Qix (http://github.com/qix-)",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/qix-/node-legos.git"
+  }
+}
