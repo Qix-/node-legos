@@ -51,4 +51,12 @@ describe('transform', function() {
     });
     filter.input({foo:'bar'});
   });
+  it('should allow basic functional transforms', function(done) {
+    var filter = new LegoTransform(function() { return "changed"; });
+    filter.on('data', function(v) {
+      v.should.equal("changed");
+      done();
+    });
+    filter.input({foo:'bar'});
+  });
 });
