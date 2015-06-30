@@ -4,6 +4,7 @@ var should = require('should');
 
 var LegoFilter = require('./lib/lego-filter');
 var LegoTransform = require('./lib/lego-transform');
+var LegoContainer = require('./lib/lego-container');
 
 describe('filter', function() {
   it('should allow matching pieces of data', function(done) {
@@ -67,13 +68,38 @@ describe('snapping', function() {
     var filter = new LegoFilter(function(v) { return v < 10; });
     var sum = 0;
 
-    transformer.snapTo(filter);
+    transformer.snap(filter);
     filter.on('data', function(v) {
       sum += v;
     });
 
     for (var i = 0; i < 100; i++) {
       transformer.input(i);
+    }
+
+    setTimeout(function() {
+      sum.should.equal(20);
+      done();
+    }, 20);
+  });
+});
+
+describe('container', function() {
+  it('should push and transform + filter', function(done) {
+    var container = new LegoContainer();
+    var transformer = new LegoTransform(function(v) { console.log("T", v); return v * 2; });
+    var filter = new LegoFilter(function(v) { console.log("F", v); return v < 10; });
+    var sum = 0;
+
+    container.push(transformer, filter);
+
+    container.on('data', function(v) {
+      console.log(v);
+      sum += v;
+    });
+
+    for (var i = 0; i < 100; i++) {
+      container.input(i);
     }
 
     setTimeout(function() {
