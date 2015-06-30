@@ -60,3 +60,25 @@ describe('transform', function() {
     filter.input({foo:'bar'});
   });
 });
+
+describe('snapping', function() {
+  it('should snap and transform + filter', function(done) {
+    var transformer = new LegoTransform(function(v) { return v * 2; });
+    var filter = new LegoFilter(function(v) { return v < 10; });
+    var sum = 0;
+
+    transformer.snapTo(filter);
+    filter.on('data', function(v) {
+      sum += v;
+    });
+
+    for (var i = 0; i < 100; i++) {
+      transformer.input(i);
+    }
+
+    setTimeout(function() {
+      sum.should.equal(20);
+      done();
+    }, 20);
+  });
+});
