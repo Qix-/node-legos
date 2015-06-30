@@ -91,7 +91,8 @@ describe('container', function() {
     var filter = new LegoFilter(function(v) { return v < 10; });
     var sum = 0;
 
-    container.push(transformer, filter);
+    container.push(transformer);
+    container.push(filter);
 
     container.on('data', function(v) {
       sum += v;
