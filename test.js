@@ -87,14 +87,13 @@ describe('snapping', function() {
 describe('container', function() {
   it('should push and transform + filter', function(done) {
     var container = new LegoContainer();
-    var transformer = new LegoTransform(function(v) { console.log("T", v); return v * 2; });
-    var filter = new LegoFilter(function(v) { console.log("F", v); return v < 10; });
+    var transformer = new LegoTransform(function(v) { return v * 2; });
+    var filter = new LegoFilter(function(v) { return v < 10; });
     var sum = 0;
 
     container.push(transformer, filter);
 
     container.on('data', function(v) {
-      console.log(v);
       sum += v;
     });
 
