@@ -10,11 +10,13 @@ var LegoContainer = require('./lib/lego-container');
 describe('filter', function() {
   it('should allow matching pieces of data', function(done) {
     var filter = new LegoFilter({foo:/^(?:bar|baz)/});
+    var result = false;
     filter.on('data', function(v) {
       v.should.have.property('foo', 'bar');
       done();
     });
     filter.input({foo:'bar'});
+    filter.close();
   });
 
   it('should not allow non-matching pieces of data', function(done) {
@@ -22,9 +24,12 @@ describe('filter', function() {
     filter.on('data', function(v) {
       done('Nope!');
     });
+    filter.on('end', function() {
+      done();
+    });
 
     filter.input({foo:1234});
-    setTimeout(done, 20);
+    filter.close();
   });
 });
 
@@ -36,6 +41,7 @@ describe('transform', function() {
       done();
     });
     filter.input({foo:'bar'});
+    filter.close();
   });
   it('should transform regex values', function(done) {
     var filter = new LegoTransform({foo:[/^b/, 'm']});
@@ -44,6 +50,7 @@ describe('transform', function() {
       done();
     });
     filter.input({foo:'bar'});
+    filter.close();
   });
   it('should ignore invalid transforms', function(done) {
     var filter = new LegoTransform({qux:[/^b/, 'm']});
@@ -52,6 +59,7 @@ describe('transform', function() {
       done();
     });
     filter.input({foo:'bar'});
+    filter.close();
   });
   it('should allow basic functional transforms', function(done) {
     var filter = new LegoTransform(function() { return "changed"; });
@@ -60,6 +68,7 @@ describe('transform', function() {
       done();
     });
     filter.input({foo:'bar'});
+    filter.close();
   });
 });
 
@@ -74,14 +83,16 @@ describe('snapping', function() {
       sum += v;
     });
 
+    filter.on('end', function() {
+      sum.should.equal(20);
+      done();
+    });
+
     for (var i = 0; i < 100; i++) {
       transformer.input(i);
     }
 
-    setTimeout(function() {
-      sum.should.equal(20);
-      done();
-    }, 20);
+    transformer.close();
   });
 });
 
@@ -99,14 +110,16 @@ describe('container', function() {
       sum += v;
     });
 
+    container.on('end', function() {
+      sum.should.equal(20);
+      done();
+    });
+
     for (var i = 0; i < 100; i++) {
       container.input(i);
     }
 
-    setTimeout(function() {
-      sum.should.equal(20);
-      done();
-    }, 20);
+    container.close();
   });
 });
 
