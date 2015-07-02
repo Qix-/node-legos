@@ -134,5 +134,30 @@ describe('api', function() {
     filter.input(17);
     filter.input("Hello");
     filter.input(5);
+    filter.close();
+  });
+
+  it('should create a working negated filter', function(done) {
+    var filter = legos.pass.when.not(5);
+    filter.on('data', function(n) {
+      n.should.equal(17);
+      done();
+    });
+
+    filter.input(5);
+    filter.input(5);
+    filter.input(17);
+    filter.close();
+  });
+
+  it('should create a working transformer', function(done) {
+    var transformer = legos.pass.and.transform(1234);
+    transformer.on('data', function(n) {
+      n.should.equal(1234);
+      done();
+    });
+
+    transformer.input(17);
+    transformer.close();
   });
 });

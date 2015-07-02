@@ -29,6 +29,15 @@ Legos.prototype = {
     };
 
     return when;
+  },
+
+  transform: function transform(transformation) {
+    this.push(new LegoTransform(transformation));
+    return this;
+  },
+
+  get and() {
+    return this;
   }
 };
 
