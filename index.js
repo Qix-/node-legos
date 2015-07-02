@@ -31,6 +31,10 @@ Legos.prototype = {
     return when;
   },
 
+  get filter() {
+    return this.when;
+  },
+
   transform: function transform(transformation) {
     this.push(new LegoTransform(transformation));
     return this;

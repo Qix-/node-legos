@@ -160,4 +160,19 @@ describe('api', function() {
     transformer.input(17);
     transformer.close();
   });
+
+  it('should create a working transformer -> filter', function(done) {
+    var pipe = legos.pass
+      .filter(24)
+      .and.transform(function(v) { return v * 2; });
+
+    pipe.on('data', function(n) {
+      n.should.equal(48);
+      done();
+    });
+
+    pipe.input(100);
+    pipe.input(24);
+    pipe.close();
+  });
 });
