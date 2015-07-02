@@ -2,6 +2,7 @@
 
 var should = require('should');
 
+var legos = require('./');
 var LegoFilter = require('./lib/lego-filter');
 var LegoTransform = require('./lib/lego-transform');
 var LegoContainer = require('./lib/lego-container');
@@ -106,5 +107,19 @@ describe('container', function() {
       sum.should.equal(20);
       done();
     }, 20);
+  });
+});
+
+describe('api', function() {
+  it('should create a working filter', function(done) {
+    var filter = legos.pass.when(5);
+    filter.on('data', function(n) {
+      n.should.equal(5);
+      done();
+    });
+
+    filter.input(17);
+    filter.input("Hello");
+    filter.input(5);
   });
 });
