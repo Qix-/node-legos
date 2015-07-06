@@ -6,6 +6,7 @@ var Lego = require('./lib/lego');
 var LegoContainer = require('./lib/lego-container');
 var LegoTransform = require('./lib/lego-transform');
 var LegoFilter = require('./lib/lego-filter');
+var LegoPassthrough = require('./lib/lego-passthrough');
 
 function Legos() {
   LegoContainer.call(this);
@@ -55,6 +56,7 @@ module.exports = {
   LegoTransform: LegoTransform,
   LegoFilter: LegoFilter,
   LegoContainer: LegoContainer,
+  LegoPassthrough: LegoPassthrough,
 
   get allow() {
     return new Legos();
