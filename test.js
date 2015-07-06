@@ -121,6 +121,22 @@ describe('container', function() {
 
     container.close();
   });
+
+  it('should propogate errors', function(done) {
+    var container = new LegoContainer();
+    var filter = new LegoFilter(/123/); // doesn't really matter
+
+    container.push(filter);
+
+    container.on('error', function(e) {
+      e.should.equal('Foobar');
+      done();
+    });
+
+    filter.emit('error', 'Foobar');
+
+    container.close();
+  });
 });
 
 describe('api', function() {
