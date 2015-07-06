@@ -3,9 +3,10 @@
 var should = require('should');
 
 var legos = require('./');
-var LegoFilter = require('./lib/lego-filter');
-var LegoTransform = require('./lib/lego-transform');
-var LegoContainer = require('./lib/lego-container');
+
+var LegoFilter = legos.LegoFilter;
+var LegoTransform = legos.LegoTransform;
+var LegoContainer = legos.LegoContainer;
 
 describe('filter', function() {
   it('should allow matching pieces of data', function(done) {
@@ -136,59 +137,5 @@ describe('container', function() {
     filter.emit('error', 'Foobar');
 
     container.close();
-  });
-});
-
-describe('api', function() {
-  it('should create a working filter', function(done) {
-    var filter = legos.pass.when(5);
-    filter.on('data', function(n) {
-      n.should.equal(5);
-      done();
-    });
-
-    filter.input(17);
-    filter.input("Hello");
-    filter.input(5);
-    filter.close();
-  });
-
-  it('should create a working negated filter', function(done) {
-    var filter = legos.pass.when.not(5);
-    filter.on('data', function(n) {
-      n.should.equal(17);
-      done();
-    });
-
-    filter.input(5);
-    filter.input(5);
-    filter.input(17);
-    filter.close();
-  });
-
-  it('should create a working transformer', function(done) {
-    var transformer = legos.pass.and.transform(1234);
-    transformer.on('data', function(n) {
-      n.should.equal(1234);
-      done();
-    });
-
-    transformer.input(17);
-    transformer.close();
-  });
-
-  it('should create a working transformer -> filter', function(done) {
-    var pipe = legos.pass
-      .filter(24)
-      .and.transform(function(v) { return v * 2; });
-
-    pipe.on('data', function(n) {
-      n.should.equal(48);
-      done();
-    });
-
-    pipe.input(100);
-    pipe.input(24);
-    pipe.close();
   });
 });
