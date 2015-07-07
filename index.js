@@ -1,17 +1,34 @@
 'use strict';
 
-var util = require('util');
-
-var Lego = require('./lib/lego');
-var LegoContainer = require('./lib/lego-container');
-var LegoTransform = require('./lib/lego-transform');
-var LegoFilter = require('./lib/lego-filter');
-var LegoPassthrough = require('./lib/lego-passthrough');
+var assertModule = require('assert-module');
 
 module.exports = {
-  Lego: Lego,
-  LegoTransform: LegoTransform,
-  LegoFilter: LegoFilter,
-  LegoContainer: LegoContainer,
-  LegoPassthrough: LegoPassthrough
+  get Lego() {
+    return require('./lib/lego');
+  },
+
+  get LegoTransform() {
+    return require('./lib/lego-transform');
+  },
+
+  get LegoFilter() {
+    return require('./lib/lego-filter');
+  },
+
+  get LegoContainer() {
+    return require('./lib/lego-container');
+  },
+
+  get LegoPassthrough() {
+    return require('./lib/lego-passthrough');
+  },
+
+  get LegoAccumulator() {
+    return require('./lib/lego-accumulator');
+  },
+
+  get LegoGlob() {
+    assertModule('glob', '`glob` must be installed to use this lego');
+    return require('./lib/lego-glob');
+  }
 };

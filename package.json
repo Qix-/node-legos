@@ -4,18 +4,18 @@
   "version": "0.3.1",
   "author": "Qix (http://github.com/qix-)",
   "keywords": [
+    "async",
+    "expressive",
+    "filter",
+    "lego",
+    "legos",
+    "pipe",
+    "pipeline",
+    "semantic",
+    "snap",
     "stream",
     "streams",
-    "legos",
-    "lego",
-    "snap",
-    "filter",
-    "transform",
-    "semantic",
-    "expressive",
-    "async",
-    "pipe",
-    "pipline"
+    "transform"
   ],
   "scripts": {
     "test": "node_modules/.bin/mocha"
@@ -25,7 +25,8 @@
     "url": "http://github.com/qix-/node-legos.git"
   },
   "dependencies": {
-    "abyss": "^0.2.1"
+    "abyss": "^0.2.1",
+    "assert-module": "^0.1.0"
   },
   "devDependencies": {
     "coveralls": "^2.11.2",
