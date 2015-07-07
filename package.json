@@ -1,7 +1,7 @@
 {
   "name": "legos",
   "description": "Snap your streams together",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "author": "Qix (http://github.com/qix-)",
   "keywords": [
     "async",
