@@ -8,6 +8,7 @@ var LegoFilter = legos.LegoFilter;
 var LegoTransform = legos.LegoTransform;
 var LegoContainer = legos.LegoContainer;
 var LegoAccumulator = legos.LegoAccumulator;
+var LegoGlob = legos.LegoGlob;
 
 describe('filter', function() {
   it('should allow matching pieces of data', function(done) {
@@ -156,5 +157,28 @@ describe('accumulator', function() {
     }
 
     acc.close();
+  });
+});
+
+describe('glob', function() {
+  it('should glob javascript files', function(done) {
+    var files = [];
+    var count = 0;
+    var globber = new LegoGlob('./*.js');
+
+    globber.on('data', function(item) {
+      files.push(item);
+      ++count;
+    });
+
+    globber.on('end', function() {
+      count.should.equal(2);
+      files.length.should.equal(2);
+      files.should.containEql('./index.js');
+      files.should.containEql('./test.js');
+      done();
+    });
+
+    globber.start();
   });
 });
