@@ -7,6 +7,7 @@ var legos = require('./');
 var LegoFilter = legos.LegoFilter;
 var LegoTransform = legos.LegoTransform;
 var LegoContainer = legos.LegoContainer;
+var LegoAccumulator = legos.LegoAccumulator;
 
 describe('filter', function() {
   it('should allow matching pieces of data', function(done) {
@@ -137,5 +138,23 @@ describe('container', function() {
     filter.emit('error', 'Foobar');
 
     container.close();
+  });
+});
+
+describe('accumulator', function() {
+  it('should accumulate items', function(done) {
+    var acc = new LegoAccumulator();
+
+    acc.on('data', function(items) {
+      items.length.should.equal(5);
+      items[4].should.equal(5);
+      done();
+    });
+
+    for (var i = 1; i <= 5; i++) {
+      acc.input(i);
+    }
+
+    acc.close();
   });
 });
