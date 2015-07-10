@@ -1,21 +1,20 @@
 {
   "name": "legos",
   "description": "Snap your streams together",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "author": "Qix (http://github.com/qix-)",
   "keywords": [
-    "async",
-    "expressive",
-    "filter",
-    "lego",
-    "legos",
-    "pipe",
-    "pipeline",
-    "semantic",
-    "snap",
-    "stream",
     "streams",
-    "transform"
+    "stream",
+    "pipe",
+    "data",
+    "lego",
+    "snap",
+    "legos",
+    "event",
+    "events",
+    "transform",
+    "filter"
   ],
   "scripts": {
     "test": "node_modules/.bin/mocha"
@@ -24,13 +23,8 @@
     "type": "git",
     "url": "http://github.com/qix-/node-legos.git"
   },
-  "dependencies": {
-    "abyss": "^0.2.1",
-    "assert-module": "^0.1.0"
-  },
   "devDependencies": {
     "coveralls": "^2.11.2",
-    "glob": "^5.0.13",
     "istanbul": "^0.3.17",
     "mocha": "^2.2.5",
     "should": "^7.0.1"
