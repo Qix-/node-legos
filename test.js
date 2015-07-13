@@ -27,7 +27,7 @@ describe('Lego', function() {
     var lego = new legos.Lego();
     (function() {
       lego.write('test');
-    }).should.throw();
+    }).should.throw('lego is not open');
     (function() {
       lego.open();
       lego.write('test');
@@ -36,7 +36,7 @@ describe('Lego', function() {
       lego.open();
       lego.close();
       lego.write('test');
-    }).should.throw();
+    }).should.throw('lego is not open');
     (function() {
       lego.open();
       lego.close();
@@ -220,5 +220,31 @@ describe('Lego', function() {
     lego4._open.should.equal(false);
     lego5._open.should.equal(false);
     lego6._open.should.equal(false);
+  });
+});
+
+describe('LegoFn', function() {
+  it('should trigger on items', function() {
+    var count = 0;
+    var lego = new legos.LegoFn(function() {
+      ++count;
+    });
+
+    lego.open();
+    lego.write('test');
+    lego.close();
+
+    count.should.equal(1);
+  });
+
+  it('should still error on closed lego', function() {
+    (function() {
+      var lego = new legos.LegoFn();
+      lego.write('test')
+    }).should.throw('lego is not open');
+    (function() {
+      var lego = new legos.LegoFn(function(){});
+      lego.write('test')
+    }).should.throw('lego is not open');
   });
 });

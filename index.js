@@ -16,5 +16,9 @@
 module.exports = {
   get Lego() {
     return require('./lib/lego');
+  },
+
+  get LegoFn() {
+    return require('./lib/lego-fn');
   }
 };
