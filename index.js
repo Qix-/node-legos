@@ -20,5 +20,9 @@ module.exports = {
 
   get LegoFn() {
     return require('./lib/lego-fn');
+  },
+
+  get LegoAccumulator() {
+    return require('./lib/lego-accumulator');
   }
 };

@@ -248,3 +248,30 @@ describe('LegoFn', function() {
     }).should.throw('lego is not open');
   });
 });
+
+describe('LegoAccumulator', function() {
+  it('should accumulate items', function() {
+    var lego1 = new legos.LegoAccumulator();
+    var lego2 = new legos.Lego();
+
+    var count = 0;
+    var len = 0;
+    lego2.write = function write(item) {
+      legos.Lego.prototype.write.call(this, item);
+      ++count;
+      len = item.length || 0;
+    };
+
+    lego1.snap(lego2);
+
+    lego1.open();
+    lego1.write('test');
+    lego1.write('test');
+    lego1.write('test');
+    lego1.write('test');
+    lego1.close();
+
+    count.should.equal(1);
+    len.should.equal(4);
+  });
+});
