@@ -500,3 +500,130 @@ describe('LegoContainer', function() {
     });
   }
 });
+
+describe('LegoFilter', function() {
+  it('should filter items (Number)', function() {
+    var lego1 = new legos.LegoFilter(123);
+    var lego2 = new legos.Lego();
+
+    var count = 0;
+
+    lego2.write = function write(item) {
+      legos.Lego.prototype.write.call(this, item);
+      ++count;
+    };
+
+    lego1.snap(lego2);
+    lego1.open();
+    lego1.write(12);
+    lego1.write(123);
+    lego1.write(234);
+    lego1.close();
+
+    count.should.equal(1);
+  });
+
+  it('should filter items (String)', function() {
+    var lego1 = new legos.LegoFilter('bof');
+    var lego2 = new legos.Lego();
+
+    var count = 0;
+
+    lego2.write = function write(item) {
+      legos.Lego.prototype.write.call(this, item);
+      ++count;
+    };
+
+    lego1.snap(lego2);
+    lego1.open();
+    lego1.write('foo');
+    lego1.write(123);
+    lego1.write('bar');
+    lego1.write(234);
+    lego1.write('bof');
+    lego1.write('qix');
+    lego1.close();
+
+    count.should.equal(1);
+  });
+
+  it('should filter items (Boolean)', function() {
+    var lego1 = new legos.LegoFilter(false);
+    var lego2 = new legos.Lego();
+
+    var count = 0;
+
+    lego2.write = function write(item) {
+      legos.Lego.prototype.write.call(this, item);
+      ++count;
+    };
+
+    lego1.snap(lego2);
+    lego1.open();
+    lego1.write('foo');
+    lego1.write(123);
+    lego1.write('bar');
+    lego1.write(false);
+    lego1.write(true);
+    lego1.write(234);
+    lego1.write('bof');
+    lego1.write('qix');
+    lego1.close();
+
+    count.should.equal(1);
+  });
+
+  it('should filter items (Function)', function() {
+    var lego1 = new legos.LegoFilter(function(v) { return v === 123 });
+    var lego2 = new legos.Lego();
+
+    var count = 0;
+
+    lego2.write = function write(item) {
+      legos.Lego.prototype.write.call(this, item);
+      ++count;
+    };
+
+    lego1.snap(lego2);
+    lego1.open();
+    lego1.write('foo');
+    lego1.write(123);
+    lego1.write('bar');
+    lego1.write(false);
+    lego1.write(true);
+    lego1.write(234);
+    lego1.write('bof');
+    lego1.write('qix');
+    lego1.close();
+
+    count.should.equal(1);
+  });
+
+  it('should filter items (deep)', function() {
+    var lego1 = new legos.LegoFilter({foo: function(v) { return v === 123 }});
+    var lego2 = new legos.Lego();
+
+    var count = 0;
+
+    lego2.write = function write(item) {
+      legos.Lego.prototype.write.call(this, item);
+      ++count;
+    };
+
+    lego1.snap(lego2);
+    lego1.open();
+    lego1.write('foo');
+    lego1.write(123);
+    lego1.write('bar');
+    lego1.write(false);
+    lego1.write(true);
+    lego1.write({herp: 'derp', foo: {bar: 123}});
+    lego1.write({foo: 123});
+    lego1.write(234);
+    lego1.write('bof');
+    lego1.write('qix');
+    lego1.close();
+
+    count.should.equal(9); // abyss allows non-objects as passes
+  });
+});
