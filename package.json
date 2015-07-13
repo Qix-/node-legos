@@ -4,17 +4,17 @@
   "version": "0.5.0",
   "author": "Qix (http://github.com/qix-)",
   "keywords": [
-    "streams",
-    "stream",
-    "pipe",
     "data",
-    "lego",
-    "snap",
-    "legos",
     "event",
     "events",
-    "transform",
-    "filter"
+    "filter",
+    "lego",
+    "legos",
+    "pipe",
+    "snap",
+    "stream",
+    "streams",
+    "transform"
   ],
   "scripts": {
     "test": "node_modules/.bin/mocha"
@@ -28,5 +28,8 @@
     "istanbul": "^0.3.17",
     "mocha": "^2.2.5",
     "should": "^7.0.1"
+  },
+  "dependencies": {
+    "abyss": "^0.2.1"
   }
 }

@@ -275,3 +275,125 @@ describe('LegoAccumulator', function() {
     len.should.equal(4);
   });
 });
+
+describe('LegoTransform', function() {
+  it('should transform item (Number)', function(done) {
+    var lego1 = new legos.LegoTransform(10);
+    var lego2 = new legos.Lego();
+
+    var val = 0;
+
+    lego2.write = function write(item) {
+      legos.Lego.prototype.write.call(this, item);
+      val = item;
+    };
+
+    lego2.close = function close() {
+      legos.Lego.prototype.close.call(this);
+      val.should.equal(10);
+      done();
+    };
+
+    lego1.snap(lego2);
+
+    lego1.open();
+    lego1.write(1555);
+    lego1.close();
+  });
+
+  it('should transform item (String)', function(done) {
+    var lego1 = new legos.LegoTransform('hello');
+    var lego2 = new legos.Lego();
+
+    var val = 0;
+
+    lego2.write = function write(item) {
+      legos.Lego.prototype.write.call(this, item);
+      val = item;
+    };
+
+    lego2.close = function close() {
+      legos.Lego.prototype.close.call(this);
+      val.should.equal('hello');
+      done();
+    };
+
+    lego1.snap(lego2);
+
+    lego1.open();
+    lego1.write(1555);
+    lego1.close();
+  });
+
+  it('should transform item (Boolean)', function(done) {
+    var lego1 = new legos.LegoTransform(true);
+    var lego2 = new legos.Lego();
+
+    var val = 0;
+
+    lego2.write = function write(item) {
+      legos.Lego.prototype.write.call(this, item);
+      val = item;
+    };
+
+    lego2.close = function close() {
+      legos.Lego.prototype.close.call(this);
+      val.should.equal(true);
+      done();
+    };
+
+    lego1.snap(lego2);
+
+    lego1.open();
+    lego1.write(1555);
+    lego1.close();
+  });
+
+  it('should transform item (Function)', function(done) {
+    var lego1 = new legos.LegoTransform(function(v){return v * 10;});
+    var lego2 = new legos.Lego();
+
+    var val = 0;
+
+    lego2.write = function write(item) {
+      legos.Lego.prototype.write.call(this, item);
+      val = item;
+    };
+
+    lego2.close = function close() {
+      legos.Lego.prototype.close.call(this);
+      val.should.equal(15550);
+      done();
+    };
+
+    lego1.snap(lego2);
+
+    lego1.open();
+    lego1.write(1555);
+    lego1.close();
+  });
+
+  it('should transform item (deep)', function(done) {
+    var lego1 = new legos.LegoTransform({a:{b:1337}});
+    var lego2 = new legos.Lego();
+
+    var val = 0;
+
+    lego2.write = function write(item) {
+      legos.Lego.prototype.write.call(this, item);
+      val = item;
+    };
+
+    lego2.close = function close() {
+      legos.Lego.prototype.close.call(this);
+      val.a.b.should.equal(1337);
+      done();
+    };
+
+    lego1.snap(lego2);
+
+    lego1.open();
+    lego1.write({a:{b:15}});
+    lego1.close();
+  });
+});
