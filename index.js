@@ -28,5 +28,9 @@ module.exports = {
 
   get LegoTransform() {
     return require('./lib/lego-transform');
+  },
+
+  get LegoContainer() {
+    return require('./lib/lego-container');
   }
 };
