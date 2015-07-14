@@ -31,6 +31,8 @@
     "should": "^7.0.1"
   },
   "dependencies": {
-    "abyss": "^0.2.1"
+    "abyss": "^0.2.1",
+    "assert-module": "^0.1.0",
+    "async": "^1.3.0"
   }
 }

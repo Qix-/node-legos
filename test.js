@@ -627,3 +627,27 @@ describe('LegoFilter', function() {
     count.should.equal(9); // abyss allows non-objects as passes
   });
 });
+
+describe('LegoGlob', function() {
+  it('should glob files', function(done) {
+    var lego1 = new legos.LegoGlob('./*.js');
+    var lego2 = new legos.Lego();
+
+    var count = 0;
+    lego2.write = function write(item) {
+      legos.Lego.prototype.write.call(this, item);
+      ++count;
+    };
+
+    lego2.close = function close() {
+      legos.Lego.prototype.close.call(this);
+      lego1._open.should.equal(false);
+      lego2._open.should.equal(false);
+      count.should.equal(2);
+      done();
+    };
+
+    lego1.snap(lego2);
+    lego1.open();
+  });
+});

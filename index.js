@@ -13,6 +13,8 @@
  *         \/______/
  */
 
+var assertModule = require('assert-module');
+
 module.exports = {
   get Lego() {
     return require('./lib/lego');
@@ -36,5 +38,10 @@ module.exports = {
 
   get LegoFilter() {
     return require('./lib/lego-filter');
+  },
+
+  get LegoGlob() {
+    assertModule('glob', 'package `glob` must be installed to use its lego');
+    return require('./lib/lego-glob');
   }
 };
