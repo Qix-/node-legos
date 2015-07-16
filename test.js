@@ -14,13 +14,13 @@
  *         \/______/
  */
 
-var should = require('should');
+require('should');
 
 var legos = require('./');
 
 describe('Lego', function() {
   it('should successfully initialize', function() {
-    var lego = new legos.Lego();
+    new legos.Lego();
   });
 
   it('should throw when writing to closed lego', function() {
@@ -240,11 +240,11 @@ describe('LegoFn', function() {
   it('should still error on closed lego', function() {
     (function() {
       var lego = new legos.LegoFn();
-      lego.write('test')
+      lego.write('test');
     }).should.throw('lego is not open');
     (function() {
       var lego = new legos.LegoFn(function(){});
-      lego.write('test')
+      lego.write('test');
     }).should.throw('lego is not open');
   });
 });
@@ -574,7 +574,7 @@ describe('LegoFilter', function() {
   });
 
   it('should filter items (Function)', function() {
-    var lego1 = new legos.LegoFilter(function(v) { return v === 123 });
+    var lego1 = new legos.LegoFilter(function(v) { return v === 123; });
     var lego2 = new legos.Lego();
 
     var count = 0;
@@ -600,7 +600,7 @@ describe('LegoFilter', function() {
   });
 
   it('should filter items (deep)', function() {
-    var lego1 = new legos.LegoFilter({foo: function(v) { return v === 123 }});
+    var lego1 = new legos.LegoFilter({foo: function(v) { return v === 123; }});
     var lego2 = new legos.Lego();
 
     var count = 0;
