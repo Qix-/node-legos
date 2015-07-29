@@ -651,3 +651,28 @@ describe('LegoGlob', function() {
     lego1.open();
   });
 });
+
+describe('LegoEmitter', function() {
+  it('should emit data event', function(done) {
+    var lego1 = new legos.Lego();
+    var lego2 = new legos.LegoEmitter();
+
+    lego1.snap(lego2);
+
+    var count = 0;
+    lego2.on('data', function(item) {
+      count += item;
+    });
+
+    lego2.on('end', function() {
+      count.should.equal(16);
+      done();
+    });
+
+    lego1.open();
+    lego1.write(1);
+    lego1.write(20);
+    lego1.write(-5);
+    lego1.close();
+  });
+});

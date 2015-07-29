@@ -40,6 +40,12 @@ module.exports = {
     return require('./lib/lego-filter');
   },
 
+  get LegoEmitter() {
+    assertModule('events',
+        'package `events` must be available to use its lego');
+    return require('./lib/lego-emitter');
+  },
+
   get LegoGlob() {
     assertModule('glob', 'package `glob` must be installed to use its lego');
     return require('./lib/lego-glob');
