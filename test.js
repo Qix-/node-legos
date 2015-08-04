@@ -501,6 +501,108 @@ describe('LegoContainer', function() {
   }
 });
 
+describe('LegoContainerParallel', function() {
+  for (var i = 0; i <= 5; i++) {
+    it('should pass an item (' + i + ' elements)', (function(i) {
+      return function() {
+        var container = new legos.LegoContainerParallel();
+        for (var j = 0; j < i; j++) {
+          container.push(new legos.Lego());
+        }
+
+        var lego = new legos.Lego();
+        var count = 0;
+        lego.write = function write(item) {
+          legos.Lego.prototype.write.call(this, item);
+          ++count;
+        };
+
+        container.snap(lego);
+        container.open();
+        container.write(1234);
+        container.close();
+
+        count.should.equal(Math.max(i, 1));
+      };
+    })(i));
+  }
+
+  for (var i = 0; i <= 5; i++) {
+    it('should successfully transfer open/close events  (' + i + ' elements)',
+        function() {
+      var container = new legos.LegoContainerParallel();
+      for (var j = 0; j < i; j++) {
+        container.push(new legos.Lego());
+      }
+
+      var lego = new legos.Lego();
+
+      container.snap(lego);
+
+      container._open.should.equal(false);
+      lego._open.should.equal(false);
+      for (var j = 0; j < i; j++) {
+        container.legos[j]._open.should.equal(false);
+      }
+
+      container.open();
+      container._open.should.equal(true);
+      lego._open.should.equal(true);
+      for (var j = 0; j < i; j++) {
+        container.legos[j]._open.should.equal(true);
+      }
+
+      container.close();
+      lego._open.should.equal(false);
+      for (var j = 0; j < i; j++) {
+        container.legos[j]._open.should.equal(false);
+      }
+    });
+  }
+
+  for (var i = 0; i <= 5; i++) {
+    it('should sucessfully pass items in an X-topology (' + i + ' elements)',
+        (function(i) {
+          return function() {
+            var lego1 = new legos.Lego();
+            var lego2 = new legos.Lego();
+            var lego3 = new legos.LegoContainerParallel();
+            var lego4 = new legos.Lego();
+            var lego5 = new legos.Lego();
+            var lego6 = new legos.Lego();
+
+            var count = 0;
+
+            for (var j = 0; j < i; j++) {
+              lego3.push(new legos.Lego());
+            }
+
+            lego1.snap(lego3);
+            lego2.snap(lego3);
+            lego3.snap(lego4);
+            lego3.snap(lego5);
+            lego4.snap(lego6);
+            lego5.snap(lego6);
+
+            lego6.write = function write(item) {
+              legos.Lego.prototype.write.call(this, item);
+              ++count;
+            };
+
+            lego1.open();
+            lego2.open();
+            lego1.write('test');
+            lego2.write('test');
+            lego3.write('test');
+            lego1.close();
+            lego2.close();
+
+            count.should.equal(3 * (Math.max(i, 1)) * 2);
+          };
+        })(i));
+  }
+});
+
 describe('LegoFilter', function() {
   it('should filter items (Number)', function() {
     var lego1 = new legos.LegoFilter(123);

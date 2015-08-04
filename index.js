@@ -36,6 +36,10 @@ module.exports = {
     return require('./lib/lego-container');
   },
 
+  get LegoContainerParallel() {
+    return require('./lib/lego-container-parallel');
+  },
+
   get LegoFilter() {
     return require('./lib/lego-filter');
   },
