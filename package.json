@@ -17,6 +17,7 @@
     "transform"
   ],
   "scripts": {
+    "pretest": "jshint index.js lib/*.js",
     "test": "node_modules/.bin/mocha"
   },
   "repository": {

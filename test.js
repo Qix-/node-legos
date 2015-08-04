@@ -19,10 +19,6 @@ require('should');
 var legos = require('./');
 
 describe('Lego', function() {
-  it('should successfully initialize', function() {
-    new legos.Lego();
-  });
-
   it('should throw when writing to closed lego', function() {
     var lego = new legos.Lego();
     (function() {
@@ -633,7 +629,7 @@ describe('LegoContainerParallel', function() {
             lego1.close();
             lego2.close();
 
-            count.should.equal(3 * (Math.max(i, 1)) * 2);
+            count.should.equal(6 * Math.max(i, 1));
           };
         })(i));
   }
