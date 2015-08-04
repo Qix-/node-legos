@@ -499,6 +499,42 @@ describe('LegoContainer', function() {
       count.should.equal(6 + (i * 3)); // three `.write('test')`'s
     });
   }
+
+  for (var i = 0; i <= 5; i++) {
+    it('should successfully transform items (' + i + ' elements)',
+        (function(i) {
+          return function() {
+            var container = new legos.LegoContainer();
+
+            for (var j = 0; j < i; j++) {
+              container.push(new legos.LegoTransform(function(i) {
+                return i * 2;
+              }));
+            }
+
+            var count = 0;
+
+            var lego = new legos.Lego();
+            lego.write = function(v) {
+              count += v;
+            };
+
+            container.snap(lego);
+
+            container.open();
+            container.write(1);
+            container.write(2);
+            container.close();
+
+            var target = 3;
+            for (var j = 0; j < i; j++) {
+              target *= 2;
+            }
+
+            count.should.equal(target);
+          };
+        })(i));
+  }
 });
 
 describe('LegoContainerParallel', function() {
