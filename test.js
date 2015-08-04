@@ -637,6 +637,37 @@ describe('LegoContainerParallel', function() {
           };
         })(i));
   }
+
+  for (var i = 0; i <= 5; i++) {
+    it('should successfully transform items (' + i + ' elements)',
+        (function(i) {
+          return function() {
+            var container = new legos.LegoContainerParallel();
+
+            for (var j = 0; j < i; j++) {
+              container.push(new legos.LegoTransform(function(i) {
+                return i * 2;
+              }));
+            }
+
+            var count = 0;
+
+            var lego = new legos.Lego();
+            lego.write = function(v) {
+              count += v;
+            };
+
+            container.snap(lego);
+
+            container.open();
+            container.write(1);
+            container.write(2);
+            container.close();
+
+            count.should.equal(Math.max(i, 0.5) * 6);
+          };
+        })(i));
+  }
 });
 
 describe('LegoFilter', function() {
