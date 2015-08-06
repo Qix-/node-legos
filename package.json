@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "abyss": "^0.2.1",
+    "array-without": "git+https://github.com/Qix-/array-without.git",
     "assert-module": "^0.1.0",
     "async": "^1.3.0"
   }
