@@ -163,13 +163,13 @@ module.exports =
       wrapper.out.write = (item)->
         (should item).equal config.read[i++]
         if i >= config.read.length
-          wrapper.in.close()
           module.exports.unsnapAll wrapper.in
           return done()
 
       wrapper.in.open()
       for item in config.write
         wrapper.in.write item
+      wrapper.in.close()
 
   snapAll: (list)->
     # this method treats everything in a list as many-to-many
