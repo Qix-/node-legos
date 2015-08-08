@@ -161,15 +161,16 @@ module.exports =
 
       i = 0
       wrapper.out.write = (item)->
-        (should item).equal config.read[i++]
+        # TODO when shouldjs/should.js#74 is accepted, change to `.deepEqual`
+        (should config.read[i++]).eql item
         if i >= config.read.length
-          module.exports.unsnapAll wrapper.in
           return done()
 
       wrapper.in.open()
       for item in config.write
         wrapper.in.write item
       wrapper.in.close()
+      module.exports.unsnapAll wrapper.in
 
   snapAll: (list)->
     # this method treats everything in a list as many-to-many
