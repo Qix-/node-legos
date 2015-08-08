@@ -12,6 +12,9 @@ module.exports =
     module.exports.testOpenOnSnap lego
     module.exports.testCloseOnUnsnap lego
     module.exports.testStrength lego
+    module.exports.testInvalidLegoSnap lego
+    module.exports.testDupeSnaps lego
+    module.exports.testDupeUnsnaps lego
 
   testInstanceOf: (lego)->
     it 'should be an instanceof Lego', ->
@@ -108,6 +111,49 @@ module.exports =
       lego.close()
       lego._open.should.equal no
       lego._openStrong.should.equal no
+
+  testInvalidLegoSnap: (lego)->
+    it 'should not accept non-legos when (un)snapping', ->
+      check = (fn)-> fn.should.throw 'not a Lego'
+
+      check -> lego.snap 'hello!'
+      check -> lego.snap {}
+      check -> lego.snap 1234
+      check -> lego.snap null
+      check -> lego.snap()
+      check -> lego.unsnap 'hello!'
+      check -> lego.unsnap {}
+      check -> lego.unsnap 1234
+      check -> lego.unsnap null
+      check -> lego.unsnap()
+
+  testDupeSnaps : (lego)->
+    it 'should gracefully ignore duplicate snaps', ->
+      next = new legos.Lego
+      try
+        lego.snap next
+        count = lego._outputs.length
+        lego.snap next
+        lego._outputs.length.should.equal count
+      finally
+        lego.unsnap next
+
+  testDupeUnsnaps : (lego)->
+    it 'should gracefully ignore duplicate unsnaps', ->
+      next = new legos.Lego
+      next2 = new legos.Lego
+      try
+        lego.snap next
+        count = lego._outputs.length
+        lego.snap next2
+
+        lego.unsnap next2
+        lego._outputs.length.should.equal count
+        lego.unsnap next2
+        lego._outputs.length.should.equal count
+      finally
+        lego.unsnap next
+        lego.unsnap next2
 
   testWrite: (description, config)->
     it description, (done)->
