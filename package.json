@@ -18,14 +18,15 @@
     "transform"
   ],
   "scripts": {
-    "pretest": "jshint index.js lib/*.js && xo **/*.js",
-    "test": "node_modules/.bin/mocha"
+    "pretest": "jshint index.js lib/*.js && xo",
+    "test": "node_modules/.bin/mocha --compilers coffee:coffee-script/register"
   },
   "repository": {
     "type": "git",
     "url": "http://github.com/qix-/node-legos.git"
   },
   "devDependencies": {
+    "coffee-script": "^1.9.3",
     "coveralls": "^2.11.2",
     "glob": "^5.0.13",
     "istanbul": "^0.3.17",
