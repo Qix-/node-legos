@@ -1,5 +1,3 @@
-'use strict';
-// jshint mocha:true
 /*
  *          _______
  *         /\      \
@@ -13,6 +11,11 @@
  *        \  /      /                   |___/
  *         \/______/
  */
+
+/* global it */
+/* global describe */
+// jshint mocha:true
+'use strict';
 
 require('should');
 
