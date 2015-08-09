@@ -83,19 +83,58 @@ suite legos.LegoContainer, ->
   link2.snap out
   link3.snap out
 
-  common.testWrite 'should pass items in series',
-    legos: [container]
-    write: [1, 2]
-    read : [1, 2]
+  describe 'basic', ->
+    common.testWrite 'should pass items in series',
+      legos: [container]
+      write: [1, 2]
+      read : [1, 2]
 
-  it 'should have counted the elements', ->
-    count.should.equal 6
+    it 'should have counted the elements', ->
+      count.should.equal 6
 
-  it 'should have closed the links', ->
-    link1._open.should.equal no
-    link2._open.should.equal no
-    link3._open.should.equal no
-    out._open.should.equal no
+    it 'should have closed the links', ->
+      link1._open.should.equal no
+      link2._open.should.equal no
+      link3._open.should.equal no
+      out._open.should.equal no
+
+  describe 'pop()', ->
+    it 'should honor pop', ->
+      count = 0
+      container.pop()
+
+    common.testWrite 'should pass items in a series',
+      legos: [container]
+      write: [1, 2]
+      read : [1, 2]
+
+    it 'should have counted the elements', ->
+      count.should.equal 4
+
+    it 'should have closed the links', ->
+      link1._open.should.equal no
+      link2._open.should.equal no
+      link3._open.should.equal no
+      out._open.should.equal no
+
+  describe 'remove()', ->
+    it 'should honor remove', ->
+      count = 0
+      container.remove link1
+
+    common.testWrite 'should pass items in a series',
+      legos: [container]
+      write: [1, 2]
+      read : [1, 2]
+
+    it 'should have counted the elements', ->
+      count.should.equal 2
+
+    it 'should have closed the links', ->
+      link1._open.should.equal no
+      link2._open.should.equal no
+      link3._open.should.equal no
+      out._open.should.equal no
 
 suite legos.LegoContainerParallel, ->
 suite legos.LegoEmitter, ->
