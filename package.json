@@ -18,22 +18,25 @@
     "transform"
   ],
   "scripts": {
-    "pretest": "jshint index.js lib/*.js && xo **/*.js",
-    "test": "node_modules/.bin/mocha"
+    "pretest": "node_modules/.bin/jshint index.js lib/*.js && node_modules/.bin/xo",
+    "test": "node_modules/.bin/mocha --compilers coffee:coffee-script/register"
   },
   "repository": {
     "type": "git",
     "url": "http://github.com/qix-/node-legos.git"
   },
   "devDependencies": {
+    "coffee-script": "^1.9.3",
     "coveralls": "^2.11.2",
     "glob": "^5.0.13",
     "istanbul": "^0.3.17",
+    "jshint": "^2.8.0",
     "mocha": "^2.2.5",
-    "should": "^7.0.1"
+    "should": "^7.0.2",
+    "xo": "^0.5.2"
   },
   "dependencies": {
-    "abyss": "^0.2.1",
+    "abyss": "^0.3.2",
     "array-without": "git+https://github.com/Qix-/array-without.git",
     "assert-module": "^0.1.0",
     "async": "^1.3.0"
