@@ -172,20 +172,40 @@ suite legos.LegoFilter, ->
     config.legos = [new legos.LegoFilter config.filter, config.negate]
     common.testWrite description, config
 
-  testTransform 'should filter a single number',
-    filter: 123,
-    write: [123, 142, 123, 12, 'hello', {}, null, 123],
-    read: [123, 123, 123]
+  describe 'positive', ->
+    testTransform 'should filter a single number',
+      filter: 123
+      write: [123, 142, 123, 12, 'hello', {}, null, 123]
+      read: [123, 123, 123]
 
-  testTransform 'should filter a string',
-    filter: 'hello!',
-    write: [123, 'hello!', 123, 'jello!', 'hello', {}, null, 'hello!'],
-    read: ['hello!', 'hello!']
+    testTransform 'should filter a string',
+      filter: 'hello!'
+      write: [123, 'hello!', 123, 'jello!', 'hello', {}, null, 'hello!']
+      read: ['hello!', 'hello!']
 
-  testTransform 'should filter an object',
-    filter: {foo: 'bar'},
-    write: [123, {foo: 'bar'}, {foo: 'jar'}, [{foo: 'bar'}], 'hello', 'bar']
-    read: [{foo: 'bar'}]
+    testTransform 'should filter an object',
+      filter: {foo: 'bar'}
+      write: [123, {foo: 'bar'}, {foo: 'jar'}, [{foo: 'bar'}], 'hello', 'bar']
+      read: [{foo: 'bar'}]
+
+  describe 'negative', ->
+    testTransform 'should filter a single number',
+      filter: 123
+      negate: yes
+      write: [123, 142, 123, 12, 'hello', {}, null, 123]
+      read: [142, 12, 'hello', {}, null]
+
+    testTransform 'should filter a string',
+      filter: 'hello!'
+      negate: yes
+      write: [123, 'hello!', 123, 'jello!', 'hello', {}, null, 'hello!']
+      read: [123, 123, 'jello!', 'hello', {}, null]
+
+    testTransform 'should filter an object',
+      filter: {foo: 'bar'}
+      negate: yes
+      write: [123, {foo: 'bar'}, {foo: 'jar'}, [{foo: 'bar'}], 'hello', 'bar']
+      read: [123, {foo: 'jar'}, [{foo: 'bar'}], 'hello', 'bar']
 
 suite legos.LegoFn, ->
 suite legos.LegoGlob, null, {autoClose: false},  ->
