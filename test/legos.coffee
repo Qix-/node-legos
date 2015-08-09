@@ -168,6 +168,25 @@ suite legos.LegoEmitter, ->
     next.close()
 
 suite legos.LegoFilter, ->
+  testTransform = (description, config)->
+    config.legos = [new legos.LegoFilter config.filter, config.negate]
+    common.testWrite description, config
+
+  testTransform 'should filter a single number',
+    filter: 123,
+    write: [123, 142, 123, 12, 'hello', {}, null, 123],
+    read: [123, 123, 123]
+
+  testTransform 'should filter a string',
+    filter: 'hello!',
+    write: [123, 'hello!', 123, 'jello!', 'hello', {}, null, 'hello!'],
+    read: ['hello!', 'hello!']
+
+  testTransform 'should filter an object',
+    filter: {foo: 'bar'},
+    write: [123, {foo: 'bar'}, {foo: 'jar'}, [{foo: 'bar'}], 'hello', 'bar']
+    read: [{foo: 'bar'}]
+
 suite legos.LegoFn, ->
 suite legos.LegoGlob, null, {autoClose: false},  ->
 suite legos.LegoTransform, ->

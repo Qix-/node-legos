@@ -160,9 +160,13 @@ module.exports =
       wrapper = module.exports.snapAll config.legos
 
       i = 0
+      ii = -1
       wrapper.out.write = (item)->
+        ++ii
         # TODO when shouldjs/should.js#74 is accepted, change to `.deepEqual`
-        (should config.read[i++]).eql item, "expected equality at read[#{i-1}]"
+        (should config.read[i++]).eql item,
+          "expected write[#{ii}] == read[#{i-1}]: " +
+          "#{item} != #{config.read[i - 1]}"
         if i >= config.read.length
           return done()
 
