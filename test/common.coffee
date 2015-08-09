@@ -163,8 +163,7 @@ module.exports =
       ii = -1
       wrapper.out.write = (item)->
         ++ii
-        # TODO when shouldjs/should.js#74 is accepted, change to `.deepEqual`
-        (should config.read[i++]).eql item,
+        (should config.read[i++]).deepEqual item,
           "expected write[#{ii}] == read[#{i-1}]: " +
           "#{item} != #{config.read[i - 1]}"
         if i >= config.read.length

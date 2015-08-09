@@ -56,8 +56,7 @@ suite legos.LegoAccumulator, ->
     acc.write item for item in [1, 2, 3, 4, 5, 'hello']
 
     acc.flush()
-    # TODO when shouldjs/should.js#74 is accepted, change to `.deepEqual`
-    cache.should.eql [1, 2, 3, 4, 5, 'hello']
+    cache.should.deepEqual [1, 2, 3, 4, 5, 'hello']
     acc._open.should.equal yes
 
     acc.close()
@@ -164,8 +163,7 @@ suite legos.LegoEmitter, ->
     lego._open.should.equal yes
     next.write 1
     next.write 2
-    # TODO when shouldjs/should.js#74 is accepted, change to `.deepEqual`
-    results.should.eql [1, 2]
+    results.should.deepEqual [1, 2]
     next.close()
 
 suite legos.LegoFilter, ->
@@ -231,8 +229,7 @@ suite legos.LegoGlob, null, {autoClose: false},  ->
     results = []
     next.write = (item)-> results.push item
     next.close = ->
-      # TODO when shouldjs/should.js#74 is accepted, change to `.deepEqual`
-      results.should.eql ['bar', 'foo', 'qux', 'qux/qix']
+      results.should.deepEqual ['bar', 'foo', 'qux', 'qux/qix']
       lego._open.should.equal no
       done()
 
@@ -267,8 +264,7 @@ suite legos.LegoGlob, null, {autoClose: false},  ->
           result err
           lego._open.should.equal yes
           next._open.should.equal yes
-          # TODO when shouldjs/should.js#74 is accepted, change to `.deepEqual`
-          results.should.eql ['bar', 'foo', 'qux', 'qux/qix']
+          results.should.deepEqual ['bar', 'foo', 'qux', 'qux/qix']
           lego.close()
           lego._open.should.equal no
           next._open.should.equal no
