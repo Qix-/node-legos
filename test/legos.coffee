@@ -146,6 +146,27 @@ suite legos.LegoContainerParallel, ->
     read : [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4]
 
 suite legos.LegoEmitter, ->
+  it 'should emit elements to \'data\' event', (done)->
+    lego = new legos.LegoEmitter
+    next = new legos.Lego
+
+    results = []
+    lego.on 'data', (item)->
+      results.push item
+    lego.on 'end', ->
+      lego._open.should.equal no
+      next._open.should.equal no
+      return done()
+
+    next.snap lego
+    next.open()
+    lego._open.should.equal yes
+    next.write 1
+    next.write 2
+    # TODO when shouldjs/should.js#74 is accepted, change to `.deepEqual`
+    results.should.eql [1, 2]
+    next.close()
+
 suite legos.LegoFilter, ->
 suite legos.LegoFn, ->
 suite legos.LegoGlob, null, {autoClose: false},  ->
