@@ -41,7 +41,7 @@ suite legos.LegoAccumulator, ->
     write: [1, 2, 3, 4, 3, 2, 1]
     read : [[1, 2, 3, 4, 3, 2, 1]]
 
-  it 'remain open after hard flush', ->
+  it 'should remain open after hard flush', ->
     cache = null
     reader = new legos.Lego
     reader.write = (item)-> cache = item
@@ -68,6 +68,35 @@ suite legos.LegoAccumulator, ->
     read : [[]]
 
 suite legos.LegoContainer, ->
+  container = new legos.LegoContainer
+  link1 = new legos.Lego
+  link2 = new legos.Lego
+  link3 = new legos.Lego
+  out = new legos.Lego
+
+  container.push link1, link2, link3
+
+  count = 0
+  out.write = (i)-> ++count
+
+  link1.snap out
+  link2.snap out
+  link3.snap out
+
+  common.testWrite 'should pass items in series',
+    legos: [container]
+    write: [1, 2]
+    read : [1, 2]
+
+  it 'should have counted the elements', ->
+    count.should.equal 6
+
+  it 'should have closed the links', ->
+    link1._open.should.equal no
+    link2._open.should.equal no
+    link3._open.should.equal no
+    out._open.should.equal no
+
 suite legos.LegoContainerParallel, ->
 suite legos.LegoEmitter, ->
 suite legos.LegoFilter, ->

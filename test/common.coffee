@@ -162,7 +162,7 @@ module.exports =
       i = 0
       wrapper.out.write = (item)->
         # TODO when shouldjs/should.js#74 is accepted, change to `.deepEqual`
-        (should config.read[i++]).eql item
+        (should config.read[i++]).eql item, "expected equality at read[#{i-1}]"
         if i >= config.read.length
           return done()
 
