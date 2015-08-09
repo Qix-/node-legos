@@ -231,7 +231,6 @@ suite legos.LegoGlob, null, {autoClose: false},  ->
     results = []
     next.write = (item)-> results.push item
     next.close = ->
-      legos.Lego.prototype.close.apply @, arguments
       # TODO when shouldjs/should.js#74 is accepted, change to `.deepEqual`
       results.should.eql ['bar', 'foo', 'qux', 'qux/qix']
       lego._open.should.equal no
