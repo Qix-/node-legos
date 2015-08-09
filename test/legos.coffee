@@ -137,6 +137,14 @@ suite legos.LegoContainer, ->
       out._open.should.equal no
 
 suite legos.LegoContainerParallel, ->
+  lego = new legos.LegoContainerParallel
+  lego.push new legos.Lego for [0...3]
+
+  common.testWrite 'should pass elements in parallel',
+    legos: [lego],
+    write: [1, 2, 3, 4]
+    read : [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4]
+
 suite legos.LegoEmitter, ->
 suite legos.LegoFilter, ->
 suite legos.LegoFn, ->
