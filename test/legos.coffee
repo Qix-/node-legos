@@ -280,3 +280,27 @@ suite legos.LegoGlob, null, {autoClose: false},  ->
       async.each = _each
 
 suite legos.LegoTransform, ->
+  testTransform = (description, config)->
+    config.legos = [new legos.LegoTransform config.transform]
+    common.testWrite description, config
+
+  testTransform 'should transform basic numbers',
+    transform: 123
+    write: ['hello', {}, null, 15, 1555, 1234]
+    read: [123, 123, 123, 123, 123, 123]
+
+  testTransform 'should transform basic strings',
+    transform: 'hi'
+    write: ['hello', {}, null, 15, 1555, 1234]
+    read: ['hi', 'hi', 'hi', 'hi', 'hi', 'hi']
+
+  testTransform 'should transform to null',
+    transform: null
+    write: ['hello', {}, null, 15, 1555, 1234]
+    read: [null, null, null, null, null, null]
+
+  testTransform 'should transform complex objects',
+    transform: a:b:(v)-> v * 2
+    write: [{a: b: 16}, {a: b: 54, c: 15}, {a: b: 14}]
+    read: [{a: b: 32}, {a: b: 108, c: 15}, {a: b: 28}]
+
