@@ -207,6 +207,20 @@ suite legos.LegoFilter, ->
       write: [123, {foo: 'bar'}, {foo: 'jar'}, [{foo: 'bar'}], 'hello', 'bar']
       read: [123, {foo: 'jar'}, [{foo: 'bar'}], 'hello', 'bar']
 
-suite legos.LegoFn, ->
+suite legos.LegoFn, (->), ->
+  it 'shouldn\'t allow non-functions', ->
+    (->
+      new legos.LegoFn 1234
+    ).should.throw 'argument must be a function'
+
+  duplicator = new legos.LegoFn (item, write)->
+    write item
+    write item
+
+  common.testWrite 'should duplicate items (twice)',
+    legos: [duplicator]
+    write: [1, 2, 3, 4, 'hello']
+    read : [1, 1, 2, 2, 3, 3, 4, 4, 'hello', 'hello']
+
 suite legos.LegoGlob, null, {autoClose: false},  ->
 suite legos.LegoTransform, ->
