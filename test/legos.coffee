@@ -13,6 +13,7 @@
 #
 
 should = require 'should'
+async = require 'async'
 common = require './common'
 legos = require '../'
 suite = require './suite'
@@ -223,4 +224,59 @@ suite legos.LegoFn, (->), ->
     read : [1, 1, 2, 2, 3, 3, 4, 4, 'hello', 'hello']
 
 suite legos.LegoGlob, null, {autoClose: false},  ->
+  it 'should glob and close', (done)->
+    lego = new legos.LegoGlob '**/*', {cwd: 'test/fixture'}
+    next = new legos.Lego
+
+    results = []
+    next.write = (item)-> results.push item
+    next.close = ->
+      legos.Lego.prototype.close.apply @, arguments
+      # TODO when shouldjs/should.js#74 is accepted, change to `.deepEqual`
+      results.should.eql ['bar', 'foo', 'qux', 'qux/qix']
+      lego._open.should.equal no
+      done()
+
+    lego.snap next
+    lego.open()
+
+  it 'should glob and stay open', (done)->
+    # this isn't going to be a beautiful test.
+    lego = new legos.LegoGlob '**/*', {cwd: 'test/fixture', autoClose: no}
+    next = new legos.Lego
+
+    results = []
+    next.write = (item)-> results.push item
+
+    lego.snap next
+
+    ###
+    # what happens here is kind of terrifying.
+    # I overwrite `async.each`, the function LegoGlob uses to iterate
+    # over the files, and wrap its "result" function (the function called
+    # either on completion or on error), allowing me to make sure it hasn't
+    # closed itself.
+    #
+    # this is in lieu of a timeout or other non-reliable means of checking
+    # information upon finishing up the scandir() (glob).
+    ###
+    _each = async.each
+    try
+      async.each = (arr, itr, result)->
+        _each.call async, arr, itr, (err)->
+          async.each = _each
+          result err
+          lego._open.should.equal yes
+          next._open.should.equal yes
+          # TODO when shouldjs/should.js#74 is accepted, change to `.deepEqual`
+          results.should.eql ['bar', 'foo', 'qux', 'qux/qix']
+          lego.close()
+          lego._open.should.equal no
+          next._open.should.equal no
+          done()
+
+      lego.open()
+    catch e
+      async.each = _each
+
 suite legos.LegoTransform, ->
